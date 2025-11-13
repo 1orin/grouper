@@ -133,7 +133,9 @@ function recomputeResults() {
   lastResults = null;
   renderResults()
   disableControls()
-  myWorker.postMessage({groups, ofSize, forRounds, withGroupLeaders, forbiddenPairs: forbiddenPairs.toJS(), discouragedGroups: discouragedGroups.toJS()})
+  // Calculate total number of people from playerNames (count non-empty names)
+  const totalPeople = playerNames.filter(name => name.length > 0).length
+  myWorker.postMessage({groups, ofSize, forRounds, withGroupLeaders, forbiddenPairs: forbiddenPairs.toJS(), discouragedGroups: discouragedGroups.toJS(), totalPeople})
 }
 
 // Every time we finish computing results we save the solution and and the

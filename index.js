@@ -329,7 +329,8 @@ function indicesOf(needle, haystack) {
 }
 
 function playerName(i) {
-  return playerNames[i] ? playerNames[i] : `Player ${i+1}`
+  // If editing names after generating groups, show empty slot instead of "Player X"
+  return playerNames[i] || '—'
 }
 
 function downloadCsv() {

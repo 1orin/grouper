@@ -1,156 +1,673 @@
+/* CSS Variables for Algorithmic Elegance Theme */
+:root {
+    --color-forest: #0d4d3d;
+    --color-forest-light: #1a6b54;
+    --color-cream: #faf8f3;
+    --color-cream-dark: #f0ede5;
+    --color-gold: #d4a574;
+    --color-gold-light: #e8c9a3;
+    --color-charcoal: #2d2d2d;
+    --color-charcoal-light: #5a5a5a;
+    --shadow-soft: 0 2px 12px rgba(13, 77, 61, 0.08);
+    --shadow-medium: 0 4px 24px rgba(13, 77, 61, 0.12);
+    --shadow-strong: 0 8px 32px rgba(13, 77, 61, 0.16);
+}
+
+/* Import distinctive fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Karla:wght@300;400;500;600&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-content: flex-start;
-    font-family: sans-serif;
+    font-family: 'Karla', sans-serif;
+    background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-cream-dark) 100%);
+    color: var(--color-charcoal);
+    margin: 0;
+    padding: 3rem 2rem;
+    min-height: 100vh;
+    position: relative;
+    line-height: 1.6;
+}
+
+/* Subtle paper texture overlay */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(13, 77, 61, 0.015) 2px, rgba(13, 77, 61, 0.015) 4px);
+    pointer-events: none;
+    z-index: 0;
 }
 
 h1 {
-    border-bottom: solid black thin;
-    font-size: 14pt;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 600;
+    color: var(--color-forest);
+    margin: 0 0 2rem 0;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    position: relative;
 }
+
+h1::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-gold) 0%, transparent 100%);
+    margin-top: 1rem;
+}
+
 h2 {
-    font-size: 12pt;
-    margin-bottom: 0.2em;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-forest);
+    margin: 0 0 0.5rem 0;
 }
 
 #controls {
-    margin-right: 2em;
+    margin-right: 4rem;
+    max-width: 420px;
+    position: relative;
+    z-index: 1;
+    animation: slideInLeft 0.6s ease-out;
 }
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 #controls > div {
     position: relative;
+    margin-bottom: 2.5rem;
 }
+
 #controls h1 {
-    font-variant: small-caps;
-    text-align: center;
+    text-align: left;
+    margin-bottom: 3rem;
 }
+
 #controls button {
     width: 100%;
-}
-#controls th {
-    white-space: nowrap;
-    text-align: right;
-}
-#controls .sliderLabel {
-    width: 2em;
-    text-align: center;
+    background: linear-gradient(135deg, var(--color-forest) 0%, var(--color-forest-light) 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-family: 'Karla', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
     overflow: hidden;
 }
-#controls .sliderLabel input {
-  width: 2em;
-  font-size: 12pt;
-  text-align: center;
-  overflow: hidden;
-  border: solid #999 thin;
+
+#controls button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
 }
-#controls #playerNames, #controls #forbiddenPairs, #controls #discouragedGroups {
+
+#controls button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+#controls button:hover {
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
+}
+
+#controls button:active {
+    transform: translateY(0);
+}
+
+#controls button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#controls table {
     width: 100%;
-    box-sizing: border-box;
-    resize: none;
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+    margin: 2rem 0;
 }
+
+#controls th {
+    white-space: nowrap;
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-forest);
+    padding-right: 1.5rem;
+    font-size: 0.95rem;
+}
+
+#controls .sliderLabel {
+    width: 3.5rem;
+    text-align: center;
+    padding-right: 1rem;
+}
+
+#controls .sliderLabel input {
+    width: 3.5rem;
+    font-size: 1rem;
+    font-family: 'Karla', sans-serif;
+    font-weight: 500;
+    text-align: center;
+    border: 2px solid var(--color-cream-dark);
+    background: white;
+    color: var(--color-forest);
+    padding: 0.5rem;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+#controls .sliderLabel input:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
+}
+
+/* Custom range slider styling */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: var(--color-cream-dark);
+    border-radius: 3px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+input[type="range"]:hover {
+    background: #e5e1d6;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, var(--color-forest) 0%, var(--color-forest-light) 100%);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: var(--shadow-medium);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, var(--color-forest) 0%, var(--color-forest-light) 100%);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.2s ease;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: var(--shadow-medium);
+}
+
+input[type="range"]::-moz-range-track {
+    height: 6px;
+    background: var(--color-cream-dark);
+    border: none;
+    border-radius: 3px;
+}
+
+input[type="range"]:focus::-moz-range-track {
+    background: #e5e1d6;
+}
+
+/* Custom checkbox styling */
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--color-cream-dark);
+    background: white;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+input[type="checkbox"]:hover {
+    border-color: var(--color-gold);
+}
+
+input[type="checkbox"]:checked {
+    background: linear-gradient(135deg, var(--color-forest) 0%, var(--color-forest-light) 100%);
+    border-color: var(--color-forest);
+}
+
+input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 16px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Section headings */
+#controls > div > div:first-child strong {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-forest);
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+/* Textareas */
+#controls #playerNames,
+#controls #forbiddenPairs,
+#controls #discouragedGroups {
+    width: 100%;
+    resize: vertical;
+    font-family: 'Karla', sans-serif;
+    font-size: 0.95rem;
+    padding: 1rem;
+    border: 2px solid var(--color-cream-dark);
+    background: white;
+    color: var(--color-charcoal);
+    border-radius: 2px;
+    transition: all 0.2s ease;
+    line-height: 1.6;
+}
+
+#controls textarea:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
+}
+
 #controls p {
-    font-size: 10pt;
-    max-width: 305px;
+    font-size: 0.9rem;
+    max-width: 420px;
+    color: var(--color-charcoal-light);
+    line-height: 1.7;
+}
+
+#controls p a {
+    color: var(--color-forest);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-gold);
+    transition: all 0.2s ease;
+}
+
+#controls p a:hover {
+    color: var(--color-gold);
+    border-bottom-color: var(--color-forest);
 }
 
 #results {
     width: 50%;
+    min-width: 600px;
+    position: relative;
+    z-index: 1;
 }
+
+#results .round {
+    background: white;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    border-radius: 2px;
+    box-shadow: var(--shadow-soft);
+    border-left: 4px solid var(--color-gold);
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out forwards;
+    transition: all 0.3s ease;
+}
+
+#results .round:hover {
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Stagger animation delays */
+#results .round:nth-child(1) { animation-delay: 0.1s; }
+#results .round:nth-child(2) { animation-delay: 0.2s; }
+#results .round:nth-child(3) { animation-delay: 0.3s; }
+#results .round:nth-child(4) { animation-delay: 0.4s; }
+#results .round:nth-child(5) { animation-delay: 0.5s; }
+#results .round:nth-child(n+6) { animation-delay: 0.6s; }
+
+#results .round h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+#results .round h1::after {
+    display: none;
+}
+
 #results .conflictScore {
-    font-size: 10pt;
-    font-weight: normal;
-    float: right;
+    font-family: 'Karla', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-gold);
+    background: rgba(212, 165, 116, 0.1);
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
+
 #results .groups {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 2rem;
 }
+
 #results .groups .group {
-    min-width: 120px;
+    min-width: 140px;
+    flex: 1;
 }
+
+#results .groups .group h2 {
+    color: var(--color-charcoal);
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-cream-dark);
+}
+
 #results .groups .group ul {
-    margin-top: 0.2em;
-    padding-left: 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#results .groups .group ul li {
+    padding: 0.5rem 0;
+    color: var(--color-charcoal);
+    font-weight: 400;
+    position: relative;
+    padding-left: 1.2rem;
+}
+
+#results .groups .group ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-gold);
+    font-weight: 600;
+}
+
+/* Results Summary Section */
+.resultsSummary {
+    background: white;
+    padding: 2rem 2.5rem;
+    margin-bottom: 2rem;
+    border-radius: 2px;
+    box-shadow: var(--shadow-soft);
+    border-top: 2px solid var(--color-cream-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out 0.7s forwards;
+}
+
+.resultsSummary span {
+    font-style: italic;
+    color: var(--color-charcoal-light);
+    flex: 1;
 }
 
 .resultsSummary button {
-    float: right;
-    margin-left: 1em;
+    background: white;
+    color: var(--color-forest);
+    border: 2px solid var(--color-forest);
+    padding: 0.7rem 1.5rem;
+    font-family: 'Karla', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    margin-left: 1rem;
 }
 
-input[type=range]::-moz-range-track {
-  height: 5px;
-  background: #ddd;
-  border: none;
-  border-radius: 3px;
+.resultsSummary button:hover {
+    background: var(--color-forest);
+    color: white;
+    box-shadow: var(--shadow-soft);
+    transform: translateY(-1px);
 }
 
-input[type=range]:focus::-moz-range-track {
-  background: #ccc;
-}
-
+/* Help text styling */
 #hide-help-link {
     display: none;
 }
 
 .help-text {
     display: none;
-    z-index: 10;
+    z-index: 100;
     position: absolute;
     box-sizing: border-box;
     left: 100%;
-    margin-left: 4px;
-    width: 425px;
-    background-color: white;
-    border: #666 solid thin;
-    padding: 1em;
-    font-size: smaller;
+    margin-left: 1.5rem;
+    width: 450px;
+    background: white;
+    border: 2px solid var(--color-forest);
+    border-radius: 2px;
+    padding: 1.5rem;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    box-shadow: var(--shadow-strong);
+    color: var(--color-charcoal);
 }
 
-/*
-CSS-only loading spinner
-source: https://stephanwagner.me/only-css-loading-spinner
-*/
+.help-text::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 20px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 10px 8px 0;
+    border-color: transparent var(--color-forest) transparent transparent;
+}
 
+.help-text::after {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 22px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 6px 8px 6px 0;
+    border-color: transparent white transparent transparent;
+}
+
+/* Loading spinner with enhanced styling */
 @keyframes spinner {
-  from {transform: rotate(0deg);}
-  to {transform: rotate(360deg);}
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .spinner {
-  position: relative;
-}
- 
-.spinner:before {
-  content: '';
-  box-sizing: border-box;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 16px;
-  height: 16px;
-  margin-top: -8px;
-  margin-left: -8px;
-  border-radius: 50%;
-  border: 2px solid #ccc;
-  border-top-color: #000;
-  animation: spinner .6s linear infinite;
+    position: relative;
+    display: inline-block;
 }
 
-/*
-Print mode: Something you could hand out to students.
-- Full-width results
-- Hide controls
-- Hide conflict scores
-- Hide results footer (timing and export controls)
-- Avoid splitting round results across multiple pages
-*/
+.spinner:before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    animation: spinner 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    body {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #controls {
+        margin-right: 0;
+        margin-bottom: 3rem;
+        max-width: 600px;
+        width: 100%;
+    }
+
+    #results {
+        width: 100%;
+        max-width: 800px;
+        min-width: auto;
+    }
+
+    .help-text {
+        left: 0;
+        right: 0;
+        width: auto;
+        margin: 1rem 0 0 0;
+        position: relative;
+    }
+
+    .help-text::before,
+    .help-text::after {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    #results .round {
+        padding: 1.5rem;
+    }
+
+    #results .groups {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .resultsSummary {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .resultsSummary button {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+/* Print mode: Clean, professional output for students */
 @media print {
-  #results { width: unset; }
-  #controls { display: none; }
-  .conflictScore { display: none; }
-  .resultsSummary { display: none; }
-  .round { break-inside: avoid; }
+    body {
+        background: white;
+        padding: 0;
+    }
+
+    body::before {
+        display: none;
+    }
+
+    #results {
+        width: 100%;
+        min-width: auto;
+    }
+
+    #controls {
+        display: none;
+    }
+
+    .conflictScore {
+        display: none;
+    }
+
+    .resultsSummary {
+        display: none;
+    }
+
+    .round {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+        page-break-inside: avoid;
+    }
+
+    h1 {
+        color: #000;
+    }
 }

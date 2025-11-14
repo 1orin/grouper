@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Good-Enough Golfers - A near-solver for scheduling problems including the Social Golfer Problem and Kirkman's Schoolgirl Problem">
     <title>Good-Enough Golfers</title>
 
     <link rel="stylesheet" href="index.css"/>
@@ -22,42 +24,44 @@
                 with their respective groups.
             </div>
         </div>
-        <button type="button" id="recomputeButton">Recompute!</button>
+        <button type="button" id="recomputeButton" aria-label="Recompute schedule">Recompute!</button>
         <table>
+            <tbody>
             <tr>
-                <th>Number of groups</th>
+                <th scope="row">Number of groups</th>
                 <td class="sliderLabel">
-                  <input type=""text" id="groupsBox" value="5" />
+                  <input type="text" id="groupsBox" value="5" aria-label="Number of groups" />
                 </td>
                 <td>
-                    <input id="groupsSlider" type="range" min="1" max="50" step="1" value="5"/>
+                    <input id="groupsSlider" type="range" min="1" max="50" step="1" value="5" aria-label="Number of groups slider"/>
                 </td>
             </tr>
             <tr>
-                <th>People per group</th>
-                <td class="sliderLabel"}>
-                  <input type="text" id="ofSizeBox" value="4" />
+                <th scope="row">People per group</th>
+                <td class="sliderLabel">
+                  <input type="text" id="ofSizeBox" value="4" aria-label="People per group" />
                 </td>
                 <td>
-                    <input id="ofSizeSlider" type="range" min="2" max="15" step="1" value="4"/>
+                    <input id="ofSizeSlider" type="range" min="2" max="15" step="1" value="4" aria-label="People per group slider"/>
                 </td>
             </tr>
             <tr>
-                <th>Number of rounds</th>
-                <td class="sliderLabel"}>
-                  <input type="text" id="forRoundsBox" value="5" />
+                <th scope="row">Number of rounds</th>
+                <td class="sliderLabel">
+                  <input type="text" id="forRoundsBox" value="5" aria-label="Number of rounds" />
                 </td>
                 <td>
-                    <input id="forRoundsSlider" type="range" min="1" max="20" step="1" value="5"/>
+                    <input id="forRoundsSlider" type="range" min="1" max="20" step="1" value="5" aria-label="Number of rounds slider"/>
                 </td>
             </tr>
             <tr>
-              <th>Use group leaders?</th>
+              <th scope="row">Use group leaders?</th>
               <td class="sliderLabel">
-                <input id="withGroupLeadersBox" type="checkbox" />
+                <input id="withGroupLeadersBox" type="checkbox" aria-label="Use group leaders" />
               </td>
               <td>&nbsp;</td>
             </tr>
+            </tbody>
         </table>
         <div>
             <div>
@@ -81,7 +85,7 @@
                 in the next box.
             </div>
             <div>
-                <textarea id="playerNames" rows="21">
+                <textarea id="playerNames" rows="21" aria-label="Player names, one per line">
 Alleson
 Brad
 Charlie
@@ -116,7 +120,7 @@ Tom
                 <br />Put groups on separate lines.
             </div>
             <div>
-                <textarea id="forbiddenPairs" rows="6">
+                <textarea id="forbiddenPairs" rows="6" aria-label="Forbidden pairs, comma-separated, one group per line">
 Brad, Danielle
 [Empty], [Empty]
 </textarea>
@@ -135,7 +139,7 @@ Brad, Danielle
                 groups by listing all players of one gender in a group here.
             </div>
             <div>
-                <textarea id="discouragedGroups" rows="6">
+                <textarea id="discouragedGroups" rows="6" aria-label="Discouraged groups, comma-separated, one group per line">
 Brad,Ivan,Mona,Stan
 </textarea>
             </div>

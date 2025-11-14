@@ -107,7 +107,7 @@ function init() {
     console.info('Failed to load previous state');
   }
 
-  playerNames = readPlayerNames()
+  playerNames = readPlayerNames().filter(name => name.length > 0)
   readConstraints(playerNames)
   onSliderLabelEdited()
   withGroupLeaders = !!controls.withGroupLeadersBox.checked
@@ -133,8 +133,10 @@ function recomputeResults() {
   lastResults = null;
   renderResults()
   disableControls()
-  // Calculate total number of people from playerNames (count non-empty names)
-  const totalPeople = playerNames.filter(name => name.length > 0).length
+  // Filter out empty names to create a dense array for the solver
+  // This ensures player indices 0-N map correctly to actual players
+  playerNames = playerNames.filter(name => name.length > 0)
+  const totalPeople = playerNames.length
   myWorker.postMessage({groups, ofSize, forRounds, withGroupLeaders, forbiddenPairs: forbiddenPairs.toJS(), discouragedGroups: discouragedGroups.toJS(), totalPeople})
 }
 
@@ -240,12 +242,12 @@ function readPlayerNames() {
 }
 
 function onPlayerNamesKeyUp() {
-  playerNames = readPlayerNames()
+  playerNames = readPlayerNames().filter(name => name.length > 0)
   renderResults()
 }
 
 function onPlayerNamesChanged() {
-  playerNames = readPlayerNames()
+  playerNames = readPlayerNames().filter(name => name.length > 0)
   readConstraints(playerNames);
   renderResults()
 }

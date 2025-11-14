@@ -133,9 +133,10 @@ function recomputeResults() {
   lastResults = null;
   renderResults()
   disableControls()
-  // Filter out empty names to create a dense array for the solver
+  // Read fresh from textarea and filter out empty names to create a dense array
   // This ensures player indices 0-N map correctly to actual players
-  playerNames = playerNames.filter(name => name.length > 0)
+  playerNames = readPlayerNames().filter(name => name.length > 0)
+  readConstraints(playerNames)
   const totalPeople = playerNames.length
   myWorker.postMessage({groups, ofSize, forRounds, withGroupLeaders, forbiddenPairs: forbiddenPairs.toJS(), discouragedGroups: discouragedGroups.toJS(), totalPeople})
 }

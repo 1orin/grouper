@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Social Grouping Solver">
     <title>Good-Enough Golfers</title>
 
     <link rel="stylesheet" href="index.css"/>
@@ -10,7 +12,7 @@
 </head>
 <body>
     <div id="controls">
-        <h1>Good-Enough Golfers</h1>
+        <h1>Supa Grupa</h1>
         <div>
             <div class="help-text">
                 Click the "Recompute" button to get a new solution.
@@ -18,70 +20,67 @@
                 rounds with the sliders.
                 <br />Solutions with more rounds and larger groups take longer
                 to compute.
-                <br />"Use Group Leaders?" keeps the first <em>N</em> players
+                <br />"Use Group Leaders?" keeps the first <em>N</em> students
                 with their respective groups.
             </div>
         </div>
-        <button type="button" id="recomputeButton">Recompute!</button>
+        <button type="button" id="recomputeButton" aria-label="Recompute schedule">Recompute!</button>
         <table>
+            <tbody>
             <tr>
-                <th>Number of groups</th>
+                <th scope="row">Number of groups</th>
                 <td class="sliderLabel">
-                  <input type=""text" id="groupsBox" value="5" />
+                  <input type="text" id="groupsBox" value="5" aria-label="Number of groups" />
                 </td>
                 <td>
-                    <input id="groupsSlider" type="range" min="1" max="50" step="1" value="5"/>
+                    <input id="groupsSlider" type="range" min="1" max="50" step="1" value="5" aria-label="Number of groups slider"/>
                 </td>
             </tr>
             <tr>
-                <th>People per group</th>
-                <td class="sliderLabel"}>
-                  <input type="text" id="ofSizeBox" value="4" />
+                <th scope="row">People per group</th>
+                <td class="sliderLabel">
+                  <input type="text" id="ofSizeBox" value="4" aria-label="People per group" />
                 </td>
                 <td>
-                    <input id="ofSizeSlider" type="range" min="2" max="15" step="1" value="4"/>
+                    <input id="ofSizeSlider" type="range" min="2" max="15" step="1" value="4" aria-label="People per group slider"/>
                 </td>
             </tr>
             <tr>
-                <th>Number of rounds</th>
-                <td class="sliderLabel"}>
-                  <input type="text" id="forRoundsBox" value="5" />
+                <th scope="row">Number of rounds</th>
+                <td class="sliderLabel">
+                  <input type="text" id="forRoundsBox" value="5" aria-label="Number of rounds" />
                 </td>
                 <td>
-                    <input id="forRoundsSlider" type="range" min="1" max="20" step="1" value="5"/>
+                    <input id="forRoundsSlider" type="range" min="1" max="20" step="1" value="5" aria-label="Number of rounds slider"/>
                 </td>
             </tr>
             <tr>
-              <th>Use group leaders?</th>
+              <th scope="row">Use group leaders?</th>
               <td class="sliderLabel">
-                <input id="withGroupLeadersBox" type="checkbox" />
+                <input id="withGroupLeadersBox" type="checkbox" aria-label="Use group leaders" />
               </td>
               <td>&nbsp;</td>
             </tr>
+            </tbody>
         </table>
         <div>
             <div>
                 <strong>Player Names</strong>
             </div>
             <div class="help-text">
-                Player names can be provided for convenience.
-                <br />If player names are omitted, players will be numbered.
-                <br />Editing player names will update the current solution in
+                Student names can be provided for convenience.
+                <br />Editing student names will update the current solution in
                 real-time; you don't need to click "Recompute."
                 <br />&nbsp;
                 <br /><strong>Privacy:</strong> Names are never sent to our
                 servers. All processing happens on your own computer.
                 <br />&nbsp;
-                <br />If two players have the same name, additional constraints
+                <br />If two students have the same name, additional constraints
                 (below) will apply to both of them.
                 <br />&nbsp;
-                <br />Tip: To produce mostly-even groups with an uneven number
-                of players, create players named <tt>[Empty]</tt> to round out
-                your roster, and add an <tt>[Empty],[Empty]</tt> constraint
-                in the next box.
             </div>
             <div>
-                <textarea id="playerNames" rows="21">
+                <textarea id="playerNames" rows="21" aria-label="Student names, one per line">
 Alleson
 Brad
 Charlie
@@ -97,11 +96,9 @@ Mona
 Nathan
 Olive
 Penelope
-Rachel
+Rockey
 Stan
 Tom
-[Empty]
-[Empty]
 </textarea>
             </div>
         </div>
@@ -110,15 +107,14 @@ Tom
                 <strong>Never allow these pairs</strong>
             </div>
             <div class="help-text">
-                Players grouped in this box are never grouped by the solver
+                Studentss grouped in this box are never grouped by the solver
                 unless absolutely necessary.
                 <br />Comma-separate names within a group.
                 <br />Put groups on separate lines.
             </div>
             <div>
-                <textarea id="forbiddenPairs" rows="6">
-Brad, Danielle
-[Empty], [Empty]
+                <textarea id="forbiddenPairs" rows="6" aria-label="Forbidden pairs, comma-separated, one group per line">
+Rockey, Ivan
 </textarea>
             </div>
         </div>
@@ -135,7 +131,7 @@ Brad, Danielle
                 groups by listing all players of one gender in a group here.
             </div>
             <div>
-                <textarea id="discouragedGroups" rows="6">
+                <textarea id="discouragedGroups" rows="6" aria-label="Discouraged groups, comma-separated, one group per line">
 Brad,Ivan,Mona,Stan
 </textarea>
             </div>
@@ -152,23 +148,16 @@ Brad,Ivan,Mona,Stan
             </div>
         </div>
         <p>
-            <em>Good-Enough Golfers</em> is a near-solver for a class of scheduling problems including the
+            <em>Supa Grupa</em> is adapted from Buchanan's near-solver for a class of scheduling problems including the
             <a href="http://mathworld.wolfram.com/SocialGolferProblem.html">Social Golfer Problem</a>
             and
             <a href="http://mathworld.wolfram.com/KirkmansSchoolgirlProblem.html">Kirkman's Schoolgirl Problem</a>.
             The goal is to schedule <tt>g x p</tt> players into <tt>g</tt> groups of size <tt>p</tt> for
             <tt>w</tt> weeks such that no two players meet more than once.
-        </p>
-        <p>
-            Real solutions to these problems can be extremely slow, but approximations are fast and
-            often good enough for real-world purposes.
-        </p>
         <p>
             <a href="http://bradleycbuchanan.com">B Buchanan</a>, 2017
             -
             <a href="https://github.com/islemaster/good-enough-golfers">View Source</a>
-            -
-            <a href="https://ko-fi.com/bcbeng">Tip Jar</a>
             -
             <a id="show-help-link" href="javascript:showHelp()">Help</a>
             <a id="hide-help-link" href="javascript:hideHelp()">Close Help</a>

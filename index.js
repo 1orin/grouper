@@ -324,7 +324,7 @@ function indicesOf(needle, haystack) {
 }
 
 function playerName(i) {
-  return playerNames[i] ? playerNames[i] : `Player ${i+1}`
+  return (playerNames[i] && playerNames[i].trim()) ? playerNames[i] : '-'
 }
 
 function downloadCsv() {
@@ -402,6 +402,22 @@ function renderResults() {
   
       roundDiv.appendChild(header)
       roundDiv.appendChild(groups)
+
+      // Add click handler for fullscreen toggle
+      roundDiv.addEventListener('click', function(e) {
+        // Prevent toggling if clicking on buttons in summary
+        if (e.target.tagName === 'BUTTON') return;
+
+        this.classList.toggle('fullscreen');
+
+        // Prevent body scroll when fullscreen is active
+        if (this.classList.contains('fullscreen')) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = '';
+        }
+      });
+
       resultsDiv.appendChild(roundDiv)
     })
     
@@ -409,8 +425,6 @@ function renderResults() {
       // Summary div - total time and CSV download
       const summaryDiv = document.createElement('div')
       summaryDiv.classList.add('resultsSummary');
-      summaryDiv.style.borderTop = 'solid #aaaaaa thin'
-      summaryDiv.style.padding = '7px 0'
 
       const csvButton = document.createElement('button')
       csvButton.type = 'button'

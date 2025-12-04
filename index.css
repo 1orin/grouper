@@ -489,13 +489,12 @@ input[type="checkbox"]:checked::after {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: stretch;
+    align-items: flex-start;
     align-content: center;
-    gap: clamp(12px, 2vmin, 24px);
+    gap: clamp(16px, 2.5vmin, 32px);
     width: 100%;
-    height: 100%;
     max-width: calc(100vw - 64px);
-    max-height: calc(100vh - 120px);
+    max-height: calc(100vh - 80px);
     margin: 0 auto;
 }
 
@@ -519,11 +518,11 @@ input[type="checkbox"]:checked::after {
 #results .round.fullscreen .groups .group {
     background: var(--cream);
     border: 3px solid var(--border-black);
-    padding: clamp(8px, 1.5vmin, 20px);
+    padding: clamp(12px, 2vmin, 24px);
     box-shadow: var(--shadow-md);
     flex: 0 1 auto;
-    min-width: clamp(100px, 15vw, 200px);
-    max-width: clamp(150px, 25vw, 300px);
+    min-width: clamp(140px, 18vw, 280px);
+    max-width: clamp(200px, 28vw, 400px);
 }
 
 #results .round.fullscreen .groups .group:hover {
@@ -545,10 +544,11 @@ input[type="checkbox"]:checked::after {
 
 /* Fullscreen group headings */
 #results .round.fullscreen .groups .group h2 {
-    font-size: clamp(14px, 2vmin, 22px);
-    margin-bottom: clamp(4px, 1vmin, 12px);
-    padding-bottom: clamp(2px, 0.5vmin, 6px);
+    font-size: clamp(18px, 2.5vmin, 28px);
+    margin-bottom: clamp(8px, 1.5vmin, 16px);
+    padding-bottom: clamp(4px, 0.8vmin, 8px);
     border-bottom: 2px solid var(--border-black);
+    line-height: 1.5;
 }
 
 #results .groups .group ul {
@@ -568,10 +568,10 @@ input[type="checkbox"]:checked::after {
 
 /* Fullscreen player names - responsive size */
 #results .round.fullscreen .groups .group ul li {
-    font-size: clamp(12px, 2vmin, 24px);
-    padding: clamp(2px, 0.5vmin, 6px) 0;
+    font-size: clamp(16px, 2.5vmin, 32px);
+    padding: 0;
     font-weight: 600;
-    line-height: var(--line-height-normal);
+    line-height: 1.5;
 }
 
 /* Results Summary */

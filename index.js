@@ -133,7 +133,8 @@ function recomputeResults() {
   lastResults = null;
   renderResults()
   disableControls()
-  myWorker.postMessage({groups, ofSize, forRounds, withGroupLeaders, forbiddenPairs: forbiddenPairs.toJS(), discouragedGroups: discouragedGroups.toJS()})
+  const numPlayers = playerNames.length > 0 ? playerNames.length : groups * ofSize;
+  myWorker.postMessage({groups, ofSize, forRounds, withGroupLeaders, forbiddenPairs: forbiddenPairs.toJS(), discouragedGroups: discouragedGroups.toJS(), numPlayers})
 }
 
 // Every time we finish computing results we save the solution and and the
@@ -235,6 +236,7 @@ function readPlayerNames() {
   return controls.playerNames.value
     .split('\n')
     .map(name => name.trim())
+    .filter(name => name.length > 0)
 }
 
 function onPlayerNamesKeyUp() {
@@ -330,7 +332,7 @@ function playerName(i) {
 function downloadCsv() {
   // Pivot results into a table that's easier to work with
   const roundNames = lastResults.rounds.map((_, i) => `Round ${i + 1}`)
-  const playerCount = lastResults.rounds[0].length * lastResults.rounds[0][0].length
+  const playerCount = lastResults.rounds[0].reduce((sum, group) => sum + group.length, 0)
   
   // Stub out a row for each player
   const players = []

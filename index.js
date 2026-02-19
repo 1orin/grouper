@@ -394,8 +394,6 @@ function renderResults() {
       round.forEach((group, groupIndex) => {
         const groupDiv = document.createElement('div')
         groupDiv.classList.add('group')
-        // Staggered animation delay
-        groupDiv.style.animationDelay = `${groupIndex * 60}ms`
 
         const groupName = document.createElement('h2')
         groupName.textContent = `Group ${groupIndex + 1}`

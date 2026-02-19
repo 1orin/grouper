@@ -193,23 +193,11 @@ h2 {
     line-height: var(--line-height-tight);
 }
 
-/* ===== HEADER ROW WITH DARK MODE TOGGLE ===== */
-.header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: var(--space-16);
-}
-
-.header-row h1 {
-    margin-bottom: 0;
-}
-
-#darkModeToggle {
-    flex-shrink: 0;
+#controls #darkModeToggle {
     width: 32px;
     height: 32px;
     background: var(--off-white);
+    color: var(--charcoal);
     border: 2px solid var(--border-black);
     border-radius: var(--radius-sm);
     font-size: 16px;
@@ -221,16 +209,17 @@ h2 {
     box-shadow: var(--shadow-sm);
     transition: all 0.15s ease;
     padding: 0;
+    margin-bottom: var(--space-16);
 }
 
-#darkModeToggle:hover {
+#controls #darkModeToggle:hover {
     background: var(--burnt-orange);
     color: var(--text-on-accent);
     box-shadow: var(--shadow-md);
     transform: translate(-2px, -2px);
 }
 
-#darkModeToggle:active {
+#controls #darkModeToggle:active {
     transform: translate(2px, 2px);
     box-shadow: none;
 }
@@ -689,8 +678,8 @@ input[type="checkbox"]:checked::after {
     font-family: var(--font-family-mono);
     font-size: var(--font-size-xs);
     font-weight: 700;
-    color: var(--off-white);
-    background: var(--terracotta);
+    color: var(--text-on-accent);
+    background: var(--burnt-orange);
     border: 2px solid var(--border-black);
     padding: var(--space-8) var(--space-16);
     border-radius: var(--radius-sm);
@@ -728,22 +717,6 @@ input[type="checkbox"]:checked::after {
     transition: all 0.2s ease;
     box-shadow: var(--shadow-sm);
     border-top: 5px solid var(--border-black);
-}
-
-/* ===== STAGGERED CARD ANIMATION ===== */
-@keyframes fadeSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-#results .groups .group {
-    animation: fadeSlideIn 0.35s ease both;
 }
 
 /* Group accent colors via nth-child */

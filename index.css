@@ -134,7 +134,7 @@ body.dark-mode #results .round.fullscreen::after {
 }
 
 body.dark-mode #results .round.fullscreen .groups .group {
-    background: var(--cream-dark);
+    background: var(--off-white);
 }
 
 * {
@@ -207,12 +207,12 @@ h2 {
 
 #darkModeToggle {
     flex-shrink: 0;
-    width: 44px;
-    height: 44px;
+    width: 32px;
+    height: 32px;
     background: var(--off-white);
-    border: 3px solid var(--border-black);
+    border: 2px solid var(--border-black);
     border-radius: var(--radius-sm);
-    font-size: 22px;
+    font-size: 16px;
     line-height: 1;
     cursor: pointer;
     display: flex;
@@ -626,6 +626,7 @@ input[type="checkbox"]:checked::after {
     justify-content: stretch;
     align-items: stretch;
     animation: zoomIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: transparent;
 }
 
 @keyframes zoomIn {
@@ -778,19 +779,30 @@ input[type="checkbox"]:checked::after {
 
 /* Fullscreen group cards */
 #results .round.fullscreen .groups .group {
-    background: var(--cream);
+    background: var(--off-white);
     border: 3px solid var(--border-black);
     padding: var(--space-16);
     box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    border-top-width: 5px;
+    border-top: 5px solid var(--border-black);
 }
+
+/* Preserve group accent colors in fullscreen */
+#results .round.fullscreen .groups .group:nth-child(10n+1) { border-top-color: var(--group-accent-1); }
+#results .round.fullscreen .groups .group:nth-child(10n+2) { border-top-color: var(--group-accent-2); }
+#results .round.fullscreen .groups .group:nth-child(10n+3) { border-top-color: var(--group-accent-3); }
+#results .round.fullscreen .groups .group:nth-child(10n+4) { border-top-color: var(--group-accent-4); }
+#results .round.fullscreen .groups .group:nth-child(10n+5) { border-top-color: var(--group-accent-5); }
+#results .round.fullscreen .groups .group:nth-child(10n+6) { border-top-color: var(--group-accent-6); }
+#results .round.fullscreen .groups .group:nth-child(10n+7) { border-top-color: var(--group-accent-7); }
+#results .round.fullscreen .groups .group:nth-child(10n+8) { border-top-color: var(--group-accent-8); }
+#results .round.fullscreen .groups .group:nth-child(10n+9) { border-top-color: var(--group-accent-9); }
+#results .round.fullscreen .groups .group:nth-child(10n+10) { border-top-color: var(--group-accent-10); }
 
 #results .round.fullscreen .groups .group:hover {
     transform: none;
-    border-color: var(--burnt-orange);
     box-shadow: var(--shadow-md);
 }
 
@@ -822,9 +834,9 @@ input[type="checkbox"]:checked::after {
 
 /* ===== PLAYER NAME PILLS ===== */
 #results .groups .group ul li {
-    display: inline-block;
+    display: block;
     padding: var(--space-4) var(--space-12);
-    margin: 2px;
+    margin: 0 0 2px 0;
     background: var(--cream);
     border: 2px solid var(--border-black);
     color: var(--charcoal);
@@ -859,12 +871,12 @@ input[type="checkbox"]:checked::after {
     display: block;
     font-size: clamp(16px, 3vmin, 32px);
     padding: var(--space-4) var(--space-8);
-    margin: 2px 0;
+    margin: 0 0 2px 0;
     font-weight: 600;
     line-height: var(--line-height-normal);
-    border: none;
-    box-shadow: none;
-    background: transparent;
+    border: 2px solid var(--border-black);
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
+    background: var(--cream);
 }
 
 /* Results Summary */

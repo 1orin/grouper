@@ -101,6 +101,8 @@ function init() {
   controls.forbiddenPairs.onchange = onForbiddenPairsChanged
   controls.discouragedGroups.onchange = onDiscouragedGroupsChanged
 
+  initDarkMode()
+
   try {
     loadStateFromLocalStorage()
   } catch (err) {
@@ -111,6 +113,7 @@ function init() {
   readConstraints(playerNames)
   onSliderLabelEdited()
   withGroupLeaders = !!controls.withGroupLeadersBox.checked
+  updatePlayerCountIndicator()
 
   if (lastResults) {
     renderResults()
@@ -133,7 +136,8 @@ function recomputeResults() {
   lastResults = null;
   renderResults()
   disableControls()
-  myWorker.postMessage({groups, ofSize, forRounds, withGroupLeaders, forbiddenPairs: forbiddenPairs.toJS(), discouragedGroups: discouragedGroups.toJS()})
+  const numPlayers = playerNames.length > 0 ? playerNames.length : groups * ofSize;
+  myWorker.postMessage({groups, ofSize, forRounds, withGroupLeaders, forbiddenPairs: forbiddenPairs.toJS(), discouragedGroups: discouragedGroups.toJS(), numPlayers})
 }
 
 // Every time we finish computing results we save the solution and and the
@@ -183,6 +187,7 @@ function onSliderMoved() {
   controls.groupsBox.value = groups
   controls.ofSizeBox.value = ofSize
   controls.forRoundsBox.value = forRounds
+  updatePlayerCountIndicator()
 }
 
 function onSliderLabelEdited() {
@@ -197,6 +202,7 @@ function onSliderLabelEdited() {
   controls.groupsSlider.value = groups
   controls.ofSizeSlider.value = Math.min(controls.ofSizeSlider.max, ofSize);
   controls.forRoundsSlider.value = Math.min(controls.forRoundsSlider.max, forRounds);
+  updatePlayerCountIndicator()
 }
 
 function onWithGroupLeadersChanged() {
@@ -235,15 +241,18 @@ function readPlayerNames() {
   return controls.playerNames.value
     .split('\n')
     .map(name => name.trim())
+    .filter(name => name.length > 0)
 }
 
 function onPlayerNamesKeyUp() {
   playerNames = readPlayerNames()
+  updatePlayerCountIndicator()
   renderResults()
 }
 
 function onPlayerNamesChanged() {
   playerNames = readPlayerNames()
+  updatePlayerCountIndicator()
   readConstraints(playerNames);
   renderResults()
 }
@@ -330,7 +339,7 @@ function playerName(i) {
 function downloadCsv() {
   // Pivot results into a table that's easier to work with
   const roundNames = lastResults.rounds.map((_, i) => `Round ${i + 1}`)
-  const playerCount = lastResults.rounds[0].length * lastResults.rounds[0][0].length
+  const playerCount = lastResults.rounds[0].reduce((sum, group) => sum + group.length, 0)
   
   // Stub out a row for each player
   const players = []
@@ -371,37 +380,52 @@ function renderResults() {
     lastResults.rounds.forEach((round, roundIndex) => {
       const roundDiv = document.createElement('div')
       roundDiv.classList.add('round')
-  
+
       const header = document.createElement('h1')
       header.textContent = `Round ${roundIndex+1}`
       const conflictScore = document.createElement('div')
       conflictScore.classList.add('conflictScore')
       conflictScore.textContent = `Conflict score: ${lastResults.roundScores[roundIndex]}`
       header.appendChild(conflictScore)
-  
-      const groups = document.createElement('div')
-      groups.classList.add('groups')
-  
+
+      const groupsDiv = document.createElement('div')
+      groupsDiv.classList.add('groups')
+
       round.forEach((group, groupIndex) => {
         const groupDiv = document.createElement('div')
         groupDiv.classList.add('group')
+        // Staggered animation delay
+        groupDiv.style.animationDelay = `${groupIndex * 60}ms`
+
         const groupName = document.createElement('h2')
         groupName.textContent = `Group ${groupIndex + 1}`
         groupDiv.appendChild(groupName)
-  
+
         const members = document.createElement('ul')
         group.sort((a, b) => parseInt(a) < parseInt(b) ? -1 : 1).forEach(personNumber => {
           const member = document.createElement('li')
           member.textContent = playerName(personNumber)
+          member.setAttribute('data-player', personNumber)
+          // Hover-to-highlight across all rounds
+          member.addEventListener('mouseenter', function() {
+            document.querySelectorAll('[data-player="' + personNumber + '"]').forEach(function(el) {
+              el.classList.add('player-highlight')
+            })
+          })
+          member.addEventListener('mouseleave', function() {
+            document.querySelectorAll('.player-highlight').forEach(function(el) {
+              el.classList.remove('player-highlight')
+            })
+          })
           members.appendChild(member)
         })
         groupDiv.appendChild(members)
-  
-        groups.appendChild(groupDiv)
+
+        groupsDiv.appendChild(groupDiv)
       })
-  
+
       roundDiv.appendChild(header)
-      roundDiv.appendChild(groups)
+      roundDiv.appendChild(groupsDiv)
 
       // Add click handler for fullscreen toggle
       roundDiv.addEventListener('click', function(e) {
@@ -420,7 +444,7 @@ function renderResults() {
 
       resultsDiv.appendChild(roundDiv)
     })
-    
+
     if (lastResults.done) {
       // Summary div - total time and CSV download
       const summaryDiv = document.createElement('div')
@@ -435,7 +459,7 @@ function renderResults() {
       printButton.type = 'button'
       printButton.appendChild(document.createTextNode('Print Results'))
       printButton.onclick = () => window.print()
-      
+
       const elapsedTime = document.createElement('span')
       elapsedTime.style.fontStyle = 'italic'
       elapsedTime.style.fontSize = 'smaller'
@@ -445,7 +469,7 @@ function renderResults() {
       } else {
         elapsedTime.textContent = `Loaded from local storage.`
       }
-      
+
       summaryDiv.appendChild(elapsedTime)
       summaryDiv.appendChild(csvButton)
       summaryDiv.appendChild(printButton)
@@ -453,6 +477,123 @@ function renderResults() {
     } else {
       resultsDiv.appendChild(document.createTextNode('Thinking...'));
     }
+
+    // Set up scroll-driven entrance for rounds
+    setupScrollObserver()
+  } else {
+    // Show skeleton loading placeholders
+    renderSkeleton()
+  }
+}
+
+// Dark mode toggle
+function initDarkMode() {
+  const toggle = document.getElementById('darkModeToggle')
+  if (!toggle) return
+
+  const saved = localStorage.getItem('darkMode')
+  if (saved === 'true' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.body.classList.add('dark-mode')
+    toggle.textContent = '\u2600' // sun
+  } else {
+    toggle.textContent = '\u263E' // moon
+  }
+
+  toggle.addEventListener('click', function(e) {
+    e.stopPropagation()
+    document.body.classList.toggle('dark-mode')
+    const isDark = document.body.classList.contains('dark-mode')
+    toggle.textContent = isDark ? '\u2600' : '\u263E'
+    localStorage.setItem('darkMode', isDark)
+  })
+}
+
+// Live player count indicator
+function updatePlayerCountIndicator() {
+  const indicator = document.getElementById('playerCountIndicator')
+  if (!indicator) return
+
+  const numPlayers = playerNames.length
+  if (numPlayers === 0 || !groups || !ofSize) {
+    indicator.textContent = ''
+    return
+  }
+
+  const totalSlots = groups * ofSize
+  const actualPlayers = Math.min(numPlayers, totalSlots)
+  const baseSize = Math.floor(actualPlayers / groups)
+  const remainder = actualPlayers % groups
+
+  let breakdown
+  if (groups === 1) {
+    breakdown = '1 group of ' + actualPlayers
+  } else if (remainder === 0) {
+    breakdown = groups + ' groups of ' + baseSize
+  } else {
+    breakdown = remainder + '\u00D7' + (baseSize + 1) + ', ' + (groups - remainder) + '\u00D7' + baseSize
+  }
+
+  let text = actualPlayers + ' players \u2192 ' + breakdown
+  if (numPlayers > totalSlots) {
+    text += ' (' + (numPlayers - totalSlots) + ' unassigned)'
+  }
+  indicator.textContent = text
+}
+
+// Scroll-driven entrance animation via IntersectionObserver
+function setupScrollObserver() {
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible')
+        observer.unobserve(entry.target)
+      }
+    })
+  }, { threshold: 0.08 })
+
+  document.querySelectorAll('#results .round, #results .resultsSummary').forEach(function(el) {
+    observer.observe(el)
+  })
+}
+
+// Skeleton loading placeholders
+function renderSkeleton() {
+  var numSkeletonRounds = Math.min(forRounds || 3, 3)
+  var numSkeletonGroups = groups || 5
+  var numSkeletonPlayers = ofSize || 4
+
+  for (var r = 0; r < numSkeletonRounds; r++) {
+    var roundDiv = document.createElement('div')
+    roundDiv.classList.add('round', 'skeleton')
+
+    var header = document.createElement('div')
+    header.classList.add('skeleton-header')
+    roundDiv.appendChild(header)
+
+    var groupsDiv = document.createElement('div')
+    groupsDiv.classList.add('groups')
+
+    for (var g = 0; g < numSkeletonGroups; g++) {
+      var groupDiv = document.createElement('div')
+      groupDiv.classList.add('group', 'skeleton-group')
+
+      var title = document.createElement('div')
+      title.classList.add('skeleton-line', 'skeleton-title')
+      groupDiv.appendChild(title)
+
+      for (var p = 0; p < numSkeletonPlayers; p++) {
+        var line = document.createElement('div')
+        line.classList.add('skeleton-line')
+        line.style.width = (50 + Math.random() * 40) + '%'
+        line.style.animationDelay = (p * 0.1) + 's'
+        groupDiv.appendChild(line)
+      }
+
+      groupsDiv.appendChild(groupDiv)
+    }
+
+    roundDiv.appendChild(groupsDiv)
+    resultsDiv.appendChild(roundDiv)
   }
 }
 

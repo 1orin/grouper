@@ -12,7 +12,10 @@
 </head>
 <body>
     <div id="controls">
-        <h1>Supa Grupa</h1>
+        <div class="header-row">
+            <h1>Supa Grupa</h1>
+            <button type="button" id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle dark mode"></button>
+        </div>
         <div>
             <div class="help-text">
                 Click the "Recompute" button to get a new solution.
@@ -63,6 +66,7 @@
             </tr>
             </tbody>
         </table>
+        <div id="playerCountIndicator"></div>
         <div>
             <div>
                 <strong>Player Names</strong>
@@ -102,12 +106,10 @@ Tom
 </textarea>
             </div>
         </div>
-        <div>
-            <div>
-                <strong>Never allow these pairs</strong>
-            </div>
+        <details>
+            <summary>Never allow these pairs</summary>
             <div class="help-text">
-                Studentss grouped in this box are never grouped by the solver
+                Students grouped in this box are never grouped by the solver
                 unless absolutely necessary.
                 <br />Comma-separate names within a group.
                 <br />Put groups on separate lines.
@@ -117,11 +119,9 @@ Tom
 Rockey, Ivan
 </textarea>
             </div>
-        </div>
-        <div>
-            <div>
-                <strong>Prefer splitting these groups</strong>
-            </div>
+        </details>
+        <details>
+            <summary>Prefer splitting these groups</summary>
             <div class="help-text">
                 Similar to above, but lower priority.
                 The solver avoids grouping players if they're already
@@ -135,7 +135,7 @@ Rockey, Ivan
 Brad,Ivan,Mona,Stan
 </textarea>
             </div>
-        </div>
+        </details>
         <div>
             <div class="help-text">
                 The <strong>conflict score</strong> is a representation of how

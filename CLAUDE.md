@@ -60,7 +60,7 @@ Shared, dependency-free helpers loaded by both the page and the worker: weight s
 ### Data Flow
 
 - User adjusts parameters (groups, size, rounds) → Main thread
-- Click "Recompute" → Worker receives parameters
+- Click "Form Groups" → Worker receives parameters
 - Worker runs genetic algorithm → Progressive results sent to main thread
 - Main thread renders results → Updates DOM
 - Solution saved to localStorage for next visit

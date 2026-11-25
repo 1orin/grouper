@@ -347,7 +347,7 @@ function enableControls() {
   controls.discouragedGroups.disabled = false
   
   // Hide spinner
-  controls.recomputeButton.innerHTML = 'Recompute!'
+  controls.recomputeButton.innerHTML = 'Form Groups'
 }
 
 function readPlayerNames() {
@@ -361,7 +361,7 @@ function readPlayerNames() {
 // same length we treat the edit as a rename (e.g. fixing a typo) and update
 // the shown names live. If names were added or removed, positions would shift
 // and every group would silently show the wrong people, so we keep the old
-// names and ask for a Recompute instead.
+// names and ask the user to form groups again instead.
 function syncNamesIntoResults() {
   if (lastResults && lastResults.config &&
       lastResults.config.playerNames.length === playerNames.length) {
@@ -551,7 +551,7 @@ function renderResults() {
     const notice = document.createElement('div')
     notice.classList.add('resultsNotice')
     notice.textContent = 'You added or removed names since these groups were made, so they still show the old list. ' +
-      'Click Recompute to make groups for the new list. To handle someone missing class, ' +
+      'Click Form Groups to make groups for the new list. To handle someone missing class, ' +
       'leave their name in and use "Mark absent" on that round instead.'
     resultsDiv.appendChild(notice)
   }
